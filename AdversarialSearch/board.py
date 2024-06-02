@@ -8,11 +8,10 @@ Move = NewType("Move", int)
 class Piece:
     @property
     def opposite(self) -> Piece:
-        raise NotImplementedError
+        raise NotImplementedError("Should be implemented by subclasses.")
 
 
 class Board(ABC):
-
     @property
     @abstractmethod
     def turn(self) -> Piece: ...
@@ -22,11 +21,15 @@ class Board(ABC):
 
     @property
     @abstractmethod
+    def get_legal_moves(self) -> List[Move]: ...
+
+    @property
+    @abstractmethod
     def is_win(self) -> bool: ...
 
     @property
     def is_draw(self) -> bool:
-        return (not self.is_win) and (len(self.legal_moves) == 0)
+        return (not self.is_win) and (len(self.get_legal_moves) == 0)
 
     @abstractmethod
     def evaluate(self, player: Piece) -> float: ...

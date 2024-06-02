@@ -7,7 +7,7 @@ from board import Piece, Board, Move
 class TTTPiece(Piece, Enum):
     X = "X"
     O = "O"
-    E = " "
+    E = " "  # stand-in for empty
 
     @property
     def opposite(self) -> TTTPiece:
@@ -18,7 +18,7 @@ class TTTPiece(Piece, Enum):
         else:
             return TTTPiece.E
 
-    def __str(self) -> str:
+    def __str__(self) -> str:
         return self.value
 
 
@@ -39,14 +39,14 @@ class TTTBoard(Board):
         return TTTBoard(temp_position, self._turn.opposite)
 
     @property
-    def legal_moves(self) -> List[Move]:
+    def get_legal_moves(self) -> List[Move]:
         return [
-            Move(1) for l in range(len(self.position)) if self.position[1] == TTTPiece.E
+            Move(l) for l in range(len(self.position)) if self.position[l] == TTTPiece.E
         ]
 
     @property
     def is_win(self) -> bool:
-
+        # three row, three column, and then two diagonal checks
         return (
             self.position[0] == self.position[1]
             and self.position[0] == self.position[2]
@@ -83,4 +83,8 @@ class TTTBoard(Board):
             return 0
 
     def __repr__(self) -> str:
-        return f"""{self.position[0]}|{self.position[1]}|{self.position[2]}\n-----\n{self.position[3]}|{self.position[4]}|{self.position[5]}\n-----\n{self.position[6]}|{self.position[7]}|{self.position[8]}"""
+        return f"""{self.position[0]}|{self.position[1]}|{self.position[2]}
+-----
+{self.position[3]}|{self.position[4]}|{self.position[5]}
+-----
+{self.position[6]}|{self.position[7]}|{self.position[8]}"""
